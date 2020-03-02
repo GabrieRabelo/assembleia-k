@@ -1,5 +1,6 @@
 package com.rabelo.assembleia.controller
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.rabelo.assembleia.model.Assembleia
 import com.rabelo.assembleia.repository.AssembleiaRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,5 +24,10 @@ class AssembleiaController @Autowired constructor(private val repository: Assemb
     @GetMapping(produces = ["application/stream+json"])
     fun get(): Flux<Assembleia> {
         return repository.findAll()
+    }
+
+    @PutMapping
+    fun put(@RequestBody assembleia: Assembleia): Mono<Assembleia> {
+        return repository.save(assembleia)
     }
 }
