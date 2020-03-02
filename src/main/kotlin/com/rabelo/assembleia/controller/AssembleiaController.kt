@@ -1,6 +1,7 @@
 package com.rabelo.assembleia.controller
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.rabelo.assembleia.exception.NotFoundException
 import com.rabelo.assembleia.model.Assembleia
 import com.rabelo.assembleia.repository.AssembleiaRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,5 +30,14 @@ class AssembleiaController @Autowired constructor(private val repository: Assemb
     @PutMapping
     fun put(@RequestBody assembleia: Assembleia): Mono<Assembleia> {
         return repository.save(assembleia)
+    }
+
+    @DeleteMapping(value = ["/{id}"])
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    fun delete(@PathVariable id: String) : Mono<Void> {
+        return repository.findById(id)
+                .switchIfEmpty(Mono.error(NotFoundException))
+                .flatMap { assembleia -> repository.delete(assembleia) }
+                .then(Mono.empty())
     }
 }
