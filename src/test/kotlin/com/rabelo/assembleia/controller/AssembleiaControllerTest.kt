@@ -29,7 +29,7 @@ internal class AssembleiaControllerTest {
     }
 
     @Test
-    fun get() {
+    fun `get will return a list`() {
         given(assembleiaRepository.findAll())
                 .willReturn(Flux.just(Assembleia(null, null), Assembleia(null, null)))
 
