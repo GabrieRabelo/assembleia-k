@@ -6,6 +6,5 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document
 data class Pauta(@Id var id: String?,
                  val descricao: String,
-                 val associados: MutableCollection<Associado>,
-                 val assembleia: Assembleia) {
-}
+                 var associados: MutableList<Associado>?,
+                 val assembleia: Assembleia)

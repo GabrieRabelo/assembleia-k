@@ -7,5 +7,4 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class Associado (@Id var id: String?,
                       val cpf: String,
                       val voto: String,
-                      val pauta: Pauta){
-}
+                      val pauta: Pauta)
