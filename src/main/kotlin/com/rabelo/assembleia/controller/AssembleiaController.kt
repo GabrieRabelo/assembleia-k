@@ -1,6 +1,5 @@
 package com.rabelo.assembleia.controller
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.rabelo.assembleia.exception.AssembleiaNotFoundException
 import com.rabelo.assembleia.model.Assembleia
 import com.rabelo.assembleia.repository.AssembleiaRepository
@@ -30,6 +29,7 @@ class AssembleiaController @Autowired constructor(private val repository: Assemb
     @GetMapping(value = ["/{id}"])
     fun getById(@PathVariable id: String) : Mono<Assembleia> {
         return repository.findById(id)
+                .switchIfEmpty(Mono.error(AssembleiaNotFoundException))
     }
 
     @PutMapping
