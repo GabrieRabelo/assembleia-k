@@ -14,8 +14,8 @@ class AssembleiaController @Autowired constructor(private val repository: Assemb
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    fun post(@RequestBody assembleia: Assembleia): Mono<Assembleia> {
-        assembleia.id = UUID.randomUUID().toString()
+    fun post(): Mono<Assembleia> {
+        val assembleia = Assembleia(UUID.randomUUID().toString(), null)
         return repository.save(assembleia)
     }
 }
