@@ -5,7 +5,4 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document
 data class Assembleia(@Id var id: String?,
-                      val pautas: MutableCollection<Pauta>) {
-
-
-}
+                      var pautas: MutableList<Pauta>?)
