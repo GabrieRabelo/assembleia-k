@@ -27,6 +27,11 @@ class AssembleiaController @Autowired constructor(private val repository: Assemb
         return repository.findAll()
     }
 
+    @GetMapping(value = ["/{id}"])
+    fun getById(@PathVariable id: String) : Mono<Assembleia> {
+        return repository.findById(id)
+    }
+
     @PutMapping
     fun put(@RequestBody assembleia: Assembleia): Mono<Assembleia> {
         return repository.save(assembleia)
