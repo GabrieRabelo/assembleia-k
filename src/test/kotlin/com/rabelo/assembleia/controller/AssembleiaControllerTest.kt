@@ -1,14 +1,22 @@
 package com.rabelo.assembleia.controller
 
+import com.rabelo.assembleia.exception.AssembleiaNotFoundException
 import com.rabelo.assembleia.model.Assembleia
 import com.rabelo.assembleia.repository.AssembleiaRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.BDDMockito.anyString
 
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
 
 internal class AssembleiaControllerTest {
 
@@ -41,7 +49,15 @@ internal class AssembleiaControllerTest {
     }
 
     @Test
-    fun getById() {
+    fun `get by id will return a single valid assembly`() {
+        given(assembleiaRepository.findById("1"))
+                .willReturn(Mono.just(Assembleia("1", null)))
+
+        webTestClient.get()
+                .uri("/assembleia/1")
+                .exchange()
+                .expectStatus().isOk
+                .expectBody(Assembleia::class.java)
     }
 
     @Test
