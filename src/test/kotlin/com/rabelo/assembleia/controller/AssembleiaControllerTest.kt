@@ -2,12 +2,13 @@ package com.rabelo.assembleia.controller
 
 import com.rabelo.assembleia.model.Assembleia
 import com.rabelo.assembleia.repository.AssembleiaRepository
+import com.rabelo.assembleia.service.AssembleiaServiceImpl
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyInt
 
 import org.mockito.BDDMockito.given
-import org.mockito.BDDMockito.verify
 import org.mockito.Mockito
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Flux
@@ -17,19 +18,19 @@ internal class AssembleiaControllerTest {
 
     lateinit var webTestClient: WebTestClient
     lateinit var assembleiaController: AssembleiaController
-    lateinit var assembleiaRepository: AssembleiaRepository
+    lateinit var assembleiaService: AssembleiaServiceImpl
 
 
     @BeforeEach
     fun setUp() {
-        assembleiaRepository = Mockito.mock(AssembleiaRepository::class.java)
-        assembleiaController = AssembleiaController(assembleiaRepository)
+        assembleiaService = Mockito.mock(AssembleiaServiceImpl::class.java)
+        assembleiaController = AssembleiaController(assembleiaService)
         webTestClient = WebTestClient.bindToController(assembleiaController).build()
     }
 
     @Test
     fun `post of assembly will return an valid assembly`() {
-        given(assembleiaRepository.save(any(Assembleia::class.java)))
+        given(assembleiaService.create())
                 .willReturn(Mono.just(Assembleia("1", null)))
 
         webTestClient.post()
@@ -41,7 +42,7 @@ internal class AssembleiaControllerTest {
 
     @Test
     fun `get will return a list`() {
-        given(assembleiaRepository.findAll())
+        given(assembleiaService.getAssemblyList())
                 .willReturn(Flux.just(Assembleia(null, null), Assembleia(null, null)))
 
         webTestClient.get()
@@ -53,7 +54,7 @@ internal class AssembleiaControllerTest {
 
     @Test
     fun `get by id will return a single valid assembly`() {
-        given(assembleiaRepository.findById("1"))
+        given(assembleiaService.getById("1"))
                 .willReturn(Mono.just(Assembleia("1", null)))
 
         webTestClient.get()
@@ -65,10 +66,12 @@ internal class AssembleiaControllerTest {
 
     @Test
     fun `put will update an assembly and return it`() {
-        given(assembleiaRepository.save(any(Assembleia::class.java)))
-                .willReturn(Mono.just(Assembleia("1", null)))
+        val assembly = Assembleia("5", null)
 
-        val assemblyMono = Mono.just(Assembleia("5", null))
+        given(assembleiaService.update("2", assembly))
+                .willReturn(Mono.just(assembly))
+
+        val assemblyMono = Mono.just(assembly)
 
         webTestClient.put()
                 .uri("/assembleia/1")
@@ -80,10 +83,10 @@ internal class AssembleiaControllerTest {
 
     @Test
     fun delete(){
-        given(assembleiaRepository.findById("1"))
+        given(assembleiaService.getById("1"))
                 .willReturn(Mono.just(Assembleia("1", null)))
 
-        given(assembleiaRepository.delete(any(Assembleia::class.java)))
+        given(assembleiaService.deleteById("1"))
                 .willReturn(Mono.empty())
 
         webTestClient.delete()
