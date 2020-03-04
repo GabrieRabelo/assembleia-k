@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono
 interface AssembleiaService {
     fun create(): Mono<Assembleia>
     fun getAssemblyList(): Flux<Assembleia>
-    fun getById(): Mono<Assembleia>
-    fun update(): Mono<Assembleia>
-    fun deleteById(): Mono<Void>
+    fun getById(id:String): Mono<Assembleia>
+    fun update(id:String, assembleia:Assembleia): Mono<Assembleia>
+    fun deleteById(id:String): Mono<Void>
 }
