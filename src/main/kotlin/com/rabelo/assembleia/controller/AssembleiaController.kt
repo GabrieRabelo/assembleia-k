@@ -3,6 +3,7 @@ package com.rabelo.assembleia.controller
 import com.rabelo.assembleia.exception.AssembleiaNotFoundException
 import com.rabelo.assembleia.model.Assembleia
 import com.rabelo.assembleia.repository.AssembleiaRepository
+import com.rabelo.assembleia.service.AssembleiaServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -12,17 +13,18 @@ import java.util.*
 
 @RestController
 @RequestMapping(value = ["/assembleia"])
-class AssembleiaController @Autowired constructor(private val repository: AssembleiaRepository){
+class AssembleiaController @Autowired constructor(private val repository: AssembleiaRepository,
+                                                  private val assembleiaService: AssembleiaServiceImpl){
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    fun post(): Mono<Assembleia> {
+    fun createAssembly(): Mono<Assembleia> {
         val assembleia = Assembleia(UUID.randomUUID().toString(), null)
         return repository.save(assembleia)
     }
 
     @GetMapping(produces = ["application/stream+json"])
-    fun get(): Flux<Assembleia> {
+    fun getList(): Flux<Assembleia> {
         return repository.findAll()
     }
 
@@ -33,14 +35,14 @@ class AssembleiaController @Autowired constructor(private val repository: Assemb
     }
 
     @PutMapping(value = ["/{id}"])
-    fun put(@PathVariable id:String, @RequestBody assembleia: Assembleia): Mono<Assembleia> {
+    fun updateAssembly(@PathVariable id:String, @RequestBody assembleia: Assembleia): Mono<Assembleia> {
         assembleia.id = id;
         return repository.save(assembleia)
     }
 
     @DeleteMapping(value = ["/{id}"])
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable id: String) : Mono<Void> {
+    fun deleteAssembly(@PathVariable id: String) : Mono<Void> {
         return repository.findById(id)
                 .switchIfEmpty(Mono.error(AssembleiaNotFoundException))
                 .flatMap { assembleia -> repository.delete(assembleia) }
