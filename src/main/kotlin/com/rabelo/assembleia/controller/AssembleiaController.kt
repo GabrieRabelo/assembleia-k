@@ -32,8 +32,9 @@ class AssembleiaController @Autowired constructor(private val repository: Assemb
                 .switchIfEmpty(Mono.error(AssembleiaNotFoundException))
     }
 
-    @PutMapping
-    fun put(@RequestBody assembleia: Assembleia): Mono<Assembleia> {
+    @PutMapping(value = ["/{id}"])
+    fun put(@PathVariable id:String, @RequestBody assembleia: Assembleia): Mono<Assembleia> {
+        assembleia.id = id;
         return repository.save(assembleia)
     }
 

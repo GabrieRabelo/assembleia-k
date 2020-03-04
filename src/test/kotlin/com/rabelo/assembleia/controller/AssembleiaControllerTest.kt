@@ -64,7 +64,18 @@ internal class AssembleiaControllerTest {
     }
 
     @Test
-    fun put() {
+    fun `put will update an assembly and return it`() {
+        given(assembleiaRepository.save(any(Assembleia::class.java)))
+                .willReturn(Mono.just(Assembleia("1", null)))
+
+        val assemblyMono = Mono.just(Assembleia("5", null))
+
+        webTestClient.put()
+                .uri("/assembleia/1")
+                .body(assemblyMono, Assembleia::class.java)
+                .exchange()
+                .expectStatus().isOk
+                .expectBody(Assembleia::class.java)
     }
 
     @Test
