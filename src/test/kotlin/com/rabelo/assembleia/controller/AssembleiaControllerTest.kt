@@ -36,6 +36,7 @@ internal class AssembleiaControllerTest {
                 .uri("/assembleia")
                 .exchange()
                 .expectStatus().isCreated
+                .expectBody(Assembleia::class.java)
     }
 
     @Test
