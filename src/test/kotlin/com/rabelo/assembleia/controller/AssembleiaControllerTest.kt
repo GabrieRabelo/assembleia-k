@@ -1,12 +1,9 @@
 package com.rabelo.assembleia.controller
 
 import com.rabelo.assembleia.model.Assembleia
-import com.rabelo.assembleia.repository.AssembleiaRepository
 import com.rabelo.assembleia.service.AssembleiaServiceImpl
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyInt
 
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
