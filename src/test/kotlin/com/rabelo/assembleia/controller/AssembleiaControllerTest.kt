@@ -80,5 +80,15 @@ internal class AssembleiaControllerTest {
 
     @Test
     fun delete(){
+        given(assembleiaRepository.findById("1"))
+                .willReturn(Mono.just(Assembleia("1", null)))
+
+        given(assembleiaRepository.delete(any(Assembleia::class.java)))
+                .willReturn(Mono.empty())
+
+        webTestClient.delete()
+                .uri("/assembleia/1")
+                .exchange()
+                .expectStatus().isNoContent
     }
 }
