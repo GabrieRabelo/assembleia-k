@@ -1,7 +1,7 @@
 package com.rabelo.assembleia.repository
 
-import com.rabelo.assembleia.model.Pauta
+import com.rabelo.assembleia.model.Topic
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 
-interface PautaRepository: ReactiveCrudRepository<Pauta, String> {
+interface TopicRepository: ReactiveCrudRepository<Topic, String> {
 }
