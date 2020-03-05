@@ -1,7 +1,7 @@
 package com.rabelo.assembleia.controller
 
-import com.rabelo.assembleia.model.Assembleia
-import com.rabelo.assembleia.service.AssembleiaServiceImpl
+import com.rabelo.assembleia.model.Assembly
+import com.rabelo.assembleia.service.AssemblyServiceImpl
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -11,59 +11,59 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-internal class AssembleiaControllerTest {
+internal class AssemblyControllerTest {
 
     lateinit var webTestClient: WebTestClient
-    lateinit var assembleiaController: AssembleiaController
-    lateinit var assembleiaService: AssembleiaServiceImpl
+    lateinit var assemblyController: AssemblyController
+    lateinit var assembleiaService: AssemblyServiceImpl
 
 
     @BeforeEach
     fun setUp() {
-        assembleiaService = Mockito.mock(AssembleiaServiceImpl::class.java)
-        assembleiaController = AssembleiaController(assembleiaService)
-        webTestClient = WebTestClient.bindToController(assembleiaController).build()
+        assembleiaService = Mockito.mock(AssemblyServiceImpl::class.java)
+        assemblyController = AssemblyController(assembleiaService)
+        webTestClient = WebTestClient.bindToController(assemblyController).build()
     }
 
     @Test
     fun `post of assembly will return an valid assembly`() {
-        given(assembleiaService.create())
-                .willReturn(Mono.just(Assembleia("1", null)))
+        given(assembleiaService.createAssembly())
+                .willReturn(Mono.just(Assembly("1", null)))
 
         webTestClient.post()
                 .uri("/assembleia")
                 .exchange()
                 .expectStatus().isCreated
-                .expectBody(Assembleia::class.java)
+                .expectBody(Assembly::class.java)
     }
 
     @Test
     fun `get will return a list`() {
         given(assembleiaService.getAssemblyList())
-                .willReturn(Flux.just(Assembleia(null, null), Assembleia(null, null)))
+                .willReturn(Flux.just(Assembly(null, null), Assembly(null, null)))
 
         webTestClient.get()
                 .uri("/assembleia")
                 .exchange()
-                .expectBodyList(Assembleia::class.java)
+                .expectBodyList(Assembly::class.java)
                 .hasSize(2)
     }
 
     @Test
     fun `get by id will return a single valid assembly`() {
-        given(assembleiaService.getById("1"))
-                .willReturn(Mono.just(Assembleia("1", null)))
+        given(assembleiaService.getAssemblyById("1"))
+                .willReturn(Mono.just(Assembly("1", null)))
 
         webTestClient.get()
                 .uri("/assembleia/1")
                 .exchange()
                 .expectStatus().isOk
-                .expectBody(Assembleia::class.java)
+                .expectBody(Assembly::class.java)
     }
 
     @Test
     fun `put will update an assembly and return it`() {
-        val assembly = Assembleia("5", null)
+        val assembly = Assembly("5", null)
 
         given(assembleiaService.update("2", assembly))
                 .willReturn(Mono.just(assembly))
@@ -72,18 +72,18 @@ internal class AssembleiaControllerTest {
 
         webTestClient.put()
                 .uri("/assembleia/1")
-                .body(assemblyMono, Assembleia::class.java)
+                .body(assemblyMono, Assembly::class.java)
                 .exchange()
                 .expectStatus().isOk
-                .expectBody(Assembleia::class.java)
+                .expectBody(Assembly::class.java)
     }
 
     @Test
     fun delete(){
-        given(assembleiaService.getById("1"))
-                .willReturn(Mono.just(Assembleia("1", null)))
+        given(assembleiaService.getAssemblyById("1"))
+                .willReturn(Mono.just(Assembly("1", null)))
 
-        given(assembleiaService.deleteById("1"))
+        given(assembleiaService.delete("1"))
                 .willReturn(Mono.empty())
 
         webTestClient.delete()

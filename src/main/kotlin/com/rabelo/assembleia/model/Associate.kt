@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document
-data class Associado (@Id var id: String?,
+data class Associate (@Id var id: String?,
                       val cpf: String,
-                      val voto: String,
-                      val pauta: Pauta)
+                      val vote: String,
+                      val topic: Topic)
