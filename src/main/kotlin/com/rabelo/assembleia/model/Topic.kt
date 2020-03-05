@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document
 data class Topic(@Id var id: String?,
-                 val descricao: String,
+                 val description: String,
                  var associates: MutableList<Associate>?,
                  val assembly: Assembly)

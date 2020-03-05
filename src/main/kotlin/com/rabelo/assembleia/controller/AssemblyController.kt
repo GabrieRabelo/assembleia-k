@@ -10,32 +10,32 @@ import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping(value = ["/assembleia"])
-class AssemblyController @Autowired constructor(private val assembleiaService: AssemblyServiceImpl){
+class AssemblyController @Autowired constructor(private val assemblyService: AssemblyServiceImpl){
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     fun createAssembly(): Mono<Assembly> {
-        return assembleiaService.create()
+        return assemblyService.createAssembly()
     }
 
     @GetMapping(produces = ["application/stream+json"])
-    fun getList(): Flux<Assembly> {
-        return assembleiaService.getAssemblyList()
+    fun getAssemblyList(): Flux<Assembly> {
+        return assemblyService.getAssemblyList()
     }
 
     @GetMapping(value = ["/{id}"])
-    fun getById(@PathVariable id: String) : Mono<Assembly> {
-        return assembleiaService.getById(id)
+    fun getAssembyById(@PathVariable id: String) : Mono<Assembly> {
+        return assemblyService.getAssemblyById(id)
     }
 
     @PutMapping(value = ["/{id}"])
     fun updateAssembly(@PathVariable id:String, @RequestBody assembly: Assembly): Mono<Assembly> {
-        return assembleiaService.update(id, assembly)
+        return assemblyService.update(id, assembly)
     }
 
     @DeleteMapping(value = ["/{id}"])
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     fun deleteAssembly(@PathVariable id: String) : Mono<Void> {
-        return assembleiaService.deleteById(id)
+        return assemblyService.delete(id)
     }
 }

@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document
 data class Associate (@Id var id: String?,
                       val cpf: String,
-                      val voto: String,
+                      val vote: String,
                       val topic: Topic)

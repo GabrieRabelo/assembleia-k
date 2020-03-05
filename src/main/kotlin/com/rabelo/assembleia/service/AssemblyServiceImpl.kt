@@ -12,7 +12,7 @@ import java.util.*
 @Service
 class AssemblyServiceImpl @Autowired constructor(private val repository: AssembleiaRepository) : AssemblyService{
 
-    override fun create(): Mono<Assembly> {
+    override fun createAssembly(): Mono<Assembly> {
         val assembleia = Assembly(UUID.randomUUID().toString(), null)
         return repository.save(assembleia)
     }
@@ -21,7 +21,7 @@ class AssemblyServiceImpl @Autowired constructor(private val repository: Assembl
         return repository.findAll()
     }
 
-    override fun getById(id:String): Mono<Assembly> {
+    override fun getAssemblyById(id:String): Mono<Assembly> {
         return repository.findById(id)
                 .switchIfEmpty(Mono.error(AssemblyNotFoundException))
     }
@@ -31,7 +31,7 @@ class AssemblyServiceImpl @Autowired constructor(private val repository: Assembl
         return repository.save(assembly)
     }
 
-    override fun deleteById(id:String): Mono<Void> {
+    override fun delete(id:String): Mono<Void> {
         return repository.findById(id)
                 .switchIfEmpty(Mono.error(AssemblyNotFoundException))
                 .flatMap { assembleia -> repository.delete(assembleia) }

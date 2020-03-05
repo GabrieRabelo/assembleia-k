@@ -27,7 +27,7 @@ internal class AssemblyControllerTest {
 
     @Test
     fun `post of assembly will return an valid assembly`() {
-        given(assembleiaService.create())
+        given(assembleiaService.createAssembly())
                 .willReturn(Mono.just(Assembly("1", null)))
 
         webTestClient.post()
@@ -51,7 +51,7 @@ internal class AssemblyControllerTest {
 
     @Test
     fun `get by id will return a single valid assembly`() {
-        given(assembleiaService.getById("1"))
+        given(assembleiaService.getAssemblyById("1"))
                 .willReturn(Mono.just(Assembly("1", null)))
 
         webTestClient.get()
@@ -80,10 +80,10 @@ internal class AssemblyControllerTest {
 
     @Test
     fun delete(){
-        given(assembleiaService.getById("1"))
+        given(assembleiaService.getAssemblyById("1"))
                 .willReturn(Mono.just(Assembly("1", null)))
 
-        given(assembleiaService.deleteById("1"))
+        given(assembleiaService.delete("1"))
                 .willReturn(Mono.empty())
 
         webTestClient.delete()
