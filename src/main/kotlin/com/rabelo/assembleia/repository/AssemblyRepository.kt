@@ -5,5 +5,5 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface AssembleiaRepository : ReactiveCrudRepository<Assembly, String>{
+interface AssemblyRepository : ReactiveCrudRepository<Assembly, String>{
 }

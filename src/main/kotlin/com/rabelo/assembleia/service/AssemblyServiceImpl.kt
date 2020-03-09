@@ -2,7 +2,7 @@ package com.rabelo.assembleia.service
 
 import com.rabelo.assembleia.exception.AssemblyNotFoundException
 import com.rabelo.assembleia.model.Assembly
-import com.rabelo.assembleia.repository.AssembleiaRepository
+import com.rabelo.assembleia.repository.AssemblyRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono
 import java.util.*
 
 @Service
-class AssemblyServiceImpl @Autowired constructor(private val repository: AssembleiaRepository) : AssemblyService{
+class AssemblyServiceImpl @Autowired constructor(private val repository: AssemblyRepository) : AssemblyService{
 
     override fun createAssembly(): Mono<Assembly> {
         val assembleia = Assembly(UUID.randomUUID().toString(), null)
