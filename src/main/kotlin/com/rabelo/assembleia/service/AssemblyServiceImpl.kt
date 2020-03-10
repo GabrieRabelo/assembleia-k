@@ -13,8 +13,8 @@ import java.util.*
 class AssemblyServiceImpl @Autowired constructor(private val repository: AssemblyRepository) : AssemblyService{
 
     override fun createAssembly(): Mono<Assembly> {
-        val assembleia = Assembly(UUID.randomUUID().toString(), null)
-        return repository.save(assembleia)
+        val assembly = Assembly(UUID.randomUUID().toString(), null)
+        return repository.save(assembly)
     }
 
     override fun getAssemblyList(): Flux<Assembly> {
