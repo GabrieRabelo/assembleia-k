@@ -6,17 +6,18 @@ import com.rabelo.assembleia.service.TopicServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @RestController
 class TopicController @Autowired constructor(private val topicService: TopicServiceImpl) {
 
-    @PostMapping(value = ["/assembleia/{assemblyId}/pauta"])
-    fun createTopic(@PathVariable assemblyId: String, @RequestBody topic: Topic) {
-        topicService.createTopic(assemblyId, topic)
+    @PutMapping(value = ["/assembleia/{assemblyId}/pauta"])
+    fun createTopic(@PathVariable assemblyId: String, @RequestBody topic: Topic): Mono<Assembly> {
+        return topicService.createTopic(assemblyId, topic)
     }
 
     @GetMapping(produces = ["application/stream+json"], value = ["/assembleia/{assemblyId}/pauta"])
-    fun getTopicList(@PathVariable assemblyId: String): Flux<Topic> {
+    fun getTopicList(@PathVariable assemblyId: String): Mono<MutableList<Topic>>? {
         return topicService.getTopicList(assemblyId)
     }
 }
