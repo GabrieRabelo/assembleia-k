@@ -34,7 +34,7 @@ class AssemblyServiceImpl @Autowired constructor(private val repository: Assembl
     override fun delete(id:String): Mono<Void> {
         return repository.findById(id)
                 .switchIfEmpty(Mono.error(AssemblyNotFoundException))
-                .flatMap { assembleia -> repository.delete(assembleia) }
+                .flatMap { assembly -> repository.delete(assembly) }
                 .then(Mono.empty())
     }
 }
