@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono
 
 interface TopicService {
     fun createTopic(assemblyId: String, topic: Topic): Mono<Assembly>
-    fun getTopicList(assemblyId: String): Mono<MutableList<Topic>>
+    fun getTopicList(assemblyId: String): Flux<Topic>
     fun getTopicById(id:String): Mono<Topic>
     fun update(id:String, topic: Topic): Mono<Topic>
     fun deleteById(id:String): Mono<Void>

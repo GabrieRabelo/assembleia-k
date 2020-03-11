@@ -17,7 +17,7 @@ class TopicController @Autowired constructor(private val topicService: TopicServ
     }
 
     @GetMapping(produces = ["application/stream+json"], value = ["/assembleia/{assemblyId}/pauta"])
-    fun getTopicList(@PathVariable assemblyId: String): Mono<MutableList<Topic>>? {
+    fun getTopicList(@PathVariable assemblyId: String): Flux<Topic> {
         return topicService.getTopicList(assemblyId)
     }
 }

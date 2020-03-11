@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.core.publisher.toFlux
 import java.awt.List
 
 @Service
@@ -29,13 +30,10 @@ class TopicServiceImpl @Autowired constructor(private val repository: AssemblyRe
         return assembly
     }
 
-    override fun getTopicList(assemblyId: String): Mono<MutableList<Topic>> {
+    override fun getTopicList(assemblyId: String): Flux<Topic> {
         return repository.findById(assemblyId)
                 .filter { checkTopic(it) }
-                .map { it.topics }
-
-//                .flatMapMany(Flux::fromIterable)
-//                .switchIfEmpty(Mono.error(TopicNotFoundException))
+                .flatMapMany{ it.topics!!.toFlux() }
     }
 
 
