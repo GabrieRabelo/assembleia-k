@@ -1,5 +1,7 @@
 package com.rabelo.assembleia.service
 
+import com.rabelo.assembleia.exception.AssemblyNotFoundException
+import com.rabelo.assembleia.exception.TopicNotFoundException
 import com.rabelo.assembleia.model.Assembly
 import com.rabelo.assembleia.model.Topic
 import com.rabelo.assembleia.repository.AssemblyRepository
@@ -32,7 +34,9 @@ class TopicServiceImpl @Autowired constructor(private val repository: AssemblyRe
 
     override fun getTopicList(assemblyId: String): Flux<Topic> {
         return repository.findById(assemblyId)
+                .switchIfEmpty(Mono.error(AssemblyNotFoundException))
                 .filter { checkTopic(it) }
+                .switchIfEmpty(Mono.error(TopicNotFoundException))
                 .flatMapMany{ it.topics!!.toFlux() }
     }
 
