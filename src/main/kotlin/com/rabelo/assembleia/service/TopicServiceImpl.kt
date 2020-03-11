@@ -21,11 +21,11 @@ class TopicServiceImpl @Autowired constructor(private val repository: AssemblyRe
 
         return repository.findById(assemblyId)
                 .switchIfEmpty(Mono.error(AssemblyNotFoundException))
-                .map { topicAdder(it, topic) }
+                .map { addTopic(it, topic) }
                 .flatMap { repository.save(it) }
     }
 
-    fun topicAdder(assembly: Assembly, topic: Topic): Assembly {
+    fun addTopic(assembly: Assembly, topic: Topic): Assembly {
         if(assembly.topics == null) {
             val topics = mutableListOf<Topic>()
             topics.add(topic)
@@ -39,14 +39,9 @@ class TopicServiceImpl @Autowired constructor(private val repository: AssemblyRe
     override fun getTopicList(assemblyId: String): Flux<Topic> {
         return repository.findById(assemblyId)
                 .switchIfEmpty(Mono.error(AssemblyNotFoundException))
-                .filter { checkTopic(it) }
+                .filter { it.topics != null }
                 .switchIfEmpty(Mono.error(TopicNotFoundException))
                 .flatMapMany{ it.topics!!.toFlux() }
-    }
-
-
-    fun checkTopic(assembly: Assembly): Boolean {
-        return assembly.topics != null
     }
 
     override fun getTopicById(id: String): Mono<Topic> {
