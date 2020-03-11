@@ -11,12 +11,16 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toFlux
 import java.awt.List
+import java.util.*
 
 @Service
 class TopicServiceImpl @Autowired constructor(private val repository: AssemblyRepository): TopicService {
 
     override fun createTopic(assemblyId: String, topic: Topic): Mono<Assembly> {
+        topic.id = UUID.randomUUID().toString()
+
         return repository.findById(assemblyId)
+                .switchIfEmpty(Mono.error(AssemblyNotFoundException))
                 .map { topicAdder(it, topic) }
                 .flatMap { repository.save(it) }
     }
